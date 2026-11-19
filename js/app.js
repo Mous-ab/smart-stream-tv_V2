@@ -1,4 +1,4 @@
-import { channelsData } from "../data/data.js";
+import { getChannels } from "./api.js";
 import { renderChannelList, updatePreview, setActiveChannel } from "./ui.js";
 import { initSearch } from "./search.js";
 
@@ -23,3 +23,19 @@ document.addEventListener('DOMContentLoaded', () => {
         setActiveChannel(initialElement);
     }
 });
+
+const message = document.querySelector("#message");
+let channels = [];
+
+const loadChannels = async () => {
+    try {
+        message.textContent = "Chargement...";
+        channels = await getChannels();
+        message.textContent = "";
+        renderChannelList(channels);
+    } catch (error) {
+        message.textContent = "Impossible de charger les chaines.";
+    }
+};
+
+loadChannels();
