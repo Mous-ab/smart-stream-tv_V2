@@ -1,25 +1,43 @@
-import { channelsData } from "../data/data.js";
+import { getChannels } from "./api.js";
 import { renderChannelList, updatePreview, setActiveChannel } from "./ui.js";
 import { initSearch } from "./search.js";
 
-document.addEventListener('DOMContentLoaded', () => {
-    const onChannelClick = (channel, element) => {
-        updatePreview(channel);
-        setActiveChannel(element);
-        localStorage.setItem('lastChannelId', channel.id);
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    };
+const message = document.querySelector("#message");
+let channels = [];
 
-    renderChannelList(channelsData, 'channel-list', onChannelClick);
+const onChannelClick = (channel, element) => {
+    updatePreview(channel);
+    setActiveChannel(element);
+    localStorage.setItem('lastChannelId', channel.id);
+    window.scrollTo({ top:0, behavior: 'smooth' });
+};
 
-    initSearch(channelsData, renderChannelList, onChannelClick);
+const loadChannels = async () => {
+    try {
+        message.textContent = "Chargement...";
 
-    const savedId = localStorage.getItem('lastChannelId');
-    const initialChannel = channelsData.find(channel => channel.id === savedId) || channelsData[0];
-    const initialElement = document.querySelector(`#channel-list > [data-id="${initialChannel.id}"]`);
+        channels = await getChannels();
+        message.textContent = "";
 
-    if (initialElement) {
-        updatePreview(initialChannel);
-        setActiveChannel(initialElement);
+        renderChannelList(channels, 'channel-list', onChannelClick);
+        initSearch(channels, renderChannelList, onChannelClick);
+
+        const savedId = localStorage.getItem('lastChannelId');
+        const initialChannel = channels.find(channel => channel.id === savedId) || channels[0];
+
+        if (initialChannel) {
+            const initialElement = document.querySelector(`#channel-list > [data-id="${initialChannel.id}"]`);
+            if (initialElement) {
+                updatePreview(initialChannel);
+                setActiveChannel(initialElement);
+            }
+        }
+    } catch (error) {
+        console.error(error);
+        message.textContent = "Impossible de charger les chaînes.";
+        message.classList.add("text-red-500", "font-bold");
+        message.classList.remove("text-gray-300");
     }
-});
+};
+
+loadChannels();
