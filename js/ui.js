@@ -13,15 +13,26 @@ export function createChannelElement(channel, onChannelClick) {
     div.setAttribute('data-id', id);
 
     div.innerHTML = `
-        <span class="text-[#FCC62D] font-mono text-sm font-bold">
-            ${channelNumber}
-        </span>
+        <div class="flex items-center gap-3 pointer-events-none">
+            <span class="text-[#FCC62D] font-mono text-sm font-bold">
+                ${channelNumber}
+            </span>
 
-        <img src="${logo}" alt="${name}" loading="lazy" class="w-10 h-10 rounded bg-white p-1 object-contain">
+            <img src="${logo}" alt="${name}" loading="lazy" class="w-10 h-10 rounded bg-white p-1 object-contain">
 
-        <div class="flex flex-col">
-            <span class="text-white font-medium text-sm">${name}</span>
-            <span class="text-gray-300 text-xs">${category}</span>
+            <div class="flex flex-col">
+                <span class="text-white font-medium text-sm">${name}</span>
+                <span class="text-gray-300 text-xs">${category}</span>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-2">
+            <button data-action="favorite" class="text-xl hover:scale-110 transition-transform z-10">
+                ${channel.isFavorite === true ? "★" : "☆"}
+            </button>
+            <button data-action="delete" class="text-lg hover:scale-110 transition-transform z-10">
+                🗑
+            </button>
         </div>
     `;
 
