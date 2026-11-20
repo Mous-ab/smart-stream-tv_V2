@@ -3,6 +3,8 @@ const INACTIVE_CLASSES = ['bg-transparent', 'text-gray-300', 'hover:bg-[#2F6FED]
 
 let activeChannelId = null;
 
+export { activeChannelId };
+
 export function createChannelElement(channel, onChannelClick) {
     const { id, channelNumber, name, category, logo } = channel;
 

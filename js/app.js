@@ -8,6 +8,7 @@ const message = document.querySelector("#message");
 const list = document.querySelector("#channel-list");
 let channels = [];
 
+// Gestion des clics par delegation d'evenements
 list.addEventListener("click", async (event) => {
     // cherchons le bouton cliqué
     const button = event.target.closest("button");
@@ -25,7 +26,10 @@ list.addEventListener("click", async (event) => {
             const newValue = !channel.isFavorite;
             await updateChannel(id, { isFavorite: newValue});
             channel.isFavorite = newValue;
-            renderChannelList(channels, 'channel-list', onChannelClick);
+            // renderChannelList(channels, 'channel-list', onChannelClick);
+
+            applyFilter();
+
             message.textContent = "Favori enregistré ✔";
             message.classList.replace("text-gray-300", "text-green-400");
         } catch (error) {
@@ -35,6 +39,7 @@ list.addEventListener("click", async (event) => {
     }
 });
 
+// Clic sur une chaîne
 const onChannelClick = (channel, element) => {
     updatePreview(channel);
     setActiveChannel(element);
@@ -42,6 +47,41 @@ const onChannelClick = (channel, element) => {
     window.scrollTo({ top:0, behavior: 'smooth' });
 };
 
+// Logique de Filtre
+let currentFilter = "all";
+
+const applyFilter = () => {
+    let channelsToDisplay = channels;
+
+    if (currentFilter === "favorites") {
+        channelsToDisplay = channels.filter(c => c.isFavorite === true);
+    }
+
+    renderChannelList(channelsToDisplay, "channel-list", onChannelClick);
+}
+
+const filterAllBtn = document.getElementById("filter-all");
+const filterFavBtn = document.getElementById("filter-favorites");
+
+filterAllBtn.addEventListener("click", () => {
+    currentFilter = "all";
+    filterAllBtn.classList.add("bg-[#2F6FED]", "text-white");
+    filterAllBtn.classList.remove('bg-transparent', 'text-gray-300', 'border');
+    filterFavBtn.classList.remove('bg-[#2F6FED]', 'text-white');
+    filterFavBtn.classList.add('bg-transparent', 'text-gray-300', 'border');
+    applyFilter();
+})
+
+filterFavBtn.addEventListener("click", () => {
+    currentFilter = "favorites";
+    filterFavBtn.classList.add("bg-[#2F6FED]", "text-white");
+    filterFavBtn.classList.remove("bg-transparent", "text-gray-300", "border");
+    filterAllBtn.classList.remove("bg-[#2F6FED]", "text-white");
+    filterAllBtn.classList.add("bg-transparent", "text-gray-300", "border");
+    applyFilter();
+})
+
+// Chargement initial
 const loadChannels = async () => {
     try {
         message.textContent = "Chargement...";
@@ -56,11 +96,15 @@ const loadChannels = async () => {
                 progressPercentage: 0
             };
             return { ...apichannel, epg: localEpg };
-        })
+        });
 
         message.textContent = "";
-        renderChannelList(channels, 'channel-list', onChannelClick);
+
+        applyFilter();
         initSearch(channels, renderChannelList, onChannelClick);
+
+        // renderChannelList(channels, 'channel-list', onChannelClick);
+        // initSearch(channels, renderChannelList, onChannelClick);
 
         const savedId = localStorage.getItem('lastChannelId');
         const initialChannel = channels.find(channel => channel.id === savedId) || channels[0];
