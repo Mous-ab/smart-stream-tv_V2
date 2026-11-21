@@ -7,7 +7,7 @@
         <link rel="icon" type="image/svg+xml" href="smart-stream-icon.svg">
         <link rel="stylesheet" href="css/output.css">
     </head>
-    <body class="bg-[#0B1530] md:h-screen md:flex md:flex-col md:overflow-hidden">
+    <body class="bg-[#121E3F] md:h-screen md:flex md:flex-col md:overflow-hidden">
         <header class="bg-[#0B1530] text-white p-4 flex justify-between items-center shadow-md border-b border-[#2F6FED]/30 sticky top-0 z-50">
 
             <div class="flex items-center gap-2 sm:gap-3">
@@ -27,12 +27,24 @@
 
         </header>
 
+        <p id="message" role="alert" class="shrink-0 text-center text-sm text-gray-300 px-4 py-2 empty:hidden"></p>
+
         <main class="flex flex-col md:flex-row md:flex-1 md:overflow-hidden">
 
-            <aside class="w-full md:w-80 bg-[#0B1530]/50 border-t md:border-t-0 md:border-r border-[#2F6FED]/30 order-2 md:order-1 flex flex-col md:h-full">
+            <aside class="w-full md:w-80 bg-[#182652]/10 border-t md:border-t-0 md:border-r border-[#2F6FED]/30 order-2 md:order-1 flex flex-col md:h-full">
 
                 <div class="p-4 border-b border-[#2F6FED]/30">
                     <h2 class="text-white font-bold text-lg uppercase tracking-wider">Liste des chaînes</h2>
+                </div>
+
+                <div class="p-3 flex gap-2 border-b border-[#2F6FED]/30">
+                    <button id="filter-all" class="flex-1 bg-[#2F6FED] text-white text-xs py-2 rounded-lg font-bold transition-colors">
+                        Toutes
+                    </button>
+                    
+                    <button id="filter-favorites" class="flex-1 bg-transparent text-gray-300 border border-[#2F6FED]/30 text-xs py-2 rounded-lg font-bold hover:bg-[#2F6FED]/20 transition-colors">
+                        Mes Favoris
+                    </button>
                 </div>
 
                 <div class="p-3 border-b border-[#2F6FED]/30">
@@ -55,7 +67,7 @@
                 </div>
             </aside>
 
-            <section class="flex-1 p-4 md:p-8 order-1 md:order-2 md:overflow-y-auto">
+            <section class="flex-1 p-4 md:p-8 order-1 md:order-2 md:overflow-y-auto bg-[#0B1530]">
 
                 <div class="relative w-full aspect-video bg-black rounded-lg overflow-hidden shadow-lg border border-[#2F6FED]/30">
 
@@ -76,7 +88,7 @@
                     <!-- Conteneur des infos du programme -->
                     <div id="program-info" class="bg-[#0B1530]/30 p-4 rounded-lg border border-[#2F6FED]/20">
                         <div class="flex justify-between items-center mb-2">
-                            <span id="program-title" class="text-[#FCC62D] font-bold text-lg">Chargement...</span>
+                            <span id="program-title" class="text-[#FCC62D] font-bold text-lg">Programme non disponible</span>
                             <span id="program-time" class="text-gray-400 text-sm">--:-- - --:--</span>
                         </div>
                         

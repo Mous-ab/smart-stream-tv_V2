@@ -6,7 +6,7 @@ export function initSearch(channels, renderFunction, onChannelClick) {
 
         const filteredChannels = channels.filter(channel => {
             const nameMatch = channel.name.toLowerCase().includes(searchTerm);
-            const numberMatch = channel.channelNumber.includes(searchTerm);
+            const numberMatch = String(channel.channelNumber).includes(searchTerm);
 
             return nameMatch || numberMatch;
         });
